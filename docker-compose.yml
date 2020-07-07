@@ -1,5 +1,6 @@
 version: '2'
 services:
   postgres:
-    image: 'postgres:latest'
-  
+    image: 'postgres:10.5'
+  redis:
+    image: 'redis:latest'
