@@ -22,3 +22,15 @@ after_success:
   - docker push dineshkallu/multi-nginx
   - docker push dineshkallu/multi-server
   - docker push dineshkallu/multi-worker
+deploy:
+  edge: true
+  provider: elasticbeanstalk
+  region: us-east-1
+  app: multi-docker
+  env: MultiDocker-env
+  bucket_name: elasticbeanstalk-us-east-1-217663208034
+  bucket_path: docker-multi
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
