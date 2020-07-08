@@ -1,0 +1,24 @@
+sudo: required
+language: generic 
+services:
+  - docker
+
+before_install:
+  - docker build -t dineshkallu/complex -f ./client/Dockerfile.dev ./client
+
+scripts:
+  - docker run -e CI=true dineshkallu/complex npm test
+  - docker run dineshkallu/complex npm test -- --coverage
+
+after_success:
+  - docker build -t dineshkallu/multi-client ./client
+  - docker build -t dineshkallu/multi-nginx ./nginx
+  - docker build -t dineshkallu/multi-server ./server
+  - docker build -t dineshkallu/multi-worker ./worker
+  #login to docker cli
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  #take images push into docker hub
+  - docker push dineshkallu/multi-client
+  - docker push dineshkallu/multi-nginx
+  - docker push dineshkallu/multi-server
+  - docker push dineshkallu/multi-worker
